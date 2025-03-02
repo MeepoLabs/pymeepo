@@ -32,14 +32,6 @@ The pymeepo SDK enables developers to:
    :caption: Contents:
 
    installation
-   quickstart
-   agents
-   providers
-   tools
-   memory
-   api
-   contributing
-   changelog
 
 Indices and tables
 ==================
