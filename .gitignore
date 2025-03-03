@@ -172,4 +172,4 @@ cython_debug/
 
 # cursor
 .cursorrules
-cursor_context/**
+nosync/**
