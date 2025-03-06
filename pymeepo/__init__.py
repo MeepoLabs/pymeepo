@@ -1,18 +1,22 @@
-"""
-Meepo SDK: A flexible, extensible framework for creating, deploying,
-and orchestrating AI agents.
+"""pymeepo: A universal SDK for building and using AI agents.
 
-This package provides a comprehensive set of tools for building intelligent
-agents that can leverage various LLM providers and collaborate in hierarchies.
+pymeepo provides a unified interface for working with AI agents from various
+frameworks, allowing seamless integration and interoperability.
 """
 
 __version__ = "0.1.0"
 
-from contextlib import suppress
-from importlib.metadata import PackageNotFoundError, version
+from .core.agent import AsyncMeepoAgent, MeepoAgent
+from .core.message import Conversation, Message
+from .core.types import AgentConfig, AgentType, Role
 
-with suppress(PackageNotFoundError):
-    __version__ = version("pymeepo")
-
-# Core components will be imported here once implemented
-# from pymeepo.agents.base import Agent  # noqa: F401
+__all__ = [
+    "AsyncMeepoAgent",
+    "MeepoAgent",
+    "Conversation",
+    "Message",
+    "AgentType",
+    "AgentConfig",
+    "Role",
+    "__version__",
+]
