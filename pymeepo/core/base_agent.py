@@ -1,11 +1,14 @@
 """Base class for all Meepo agents."""
 
 from abc import ABC
+from typing import Any, Generic, TypeVar
 
 from autogen_agentchat.agents import BaseChatAgent
 
+T = TypeVar("T")
 
-class BaseMeepoAgent(BaseChatAgent, ABC):
+
+class BaseMeepoAgent(BaseChatAgent, Generic[T], ABC):
     """Abstract base class for all Meepo agents.
 
     This class serves as a wrapper around AutoGen's BaseChatAgent, providing
@@ -46,4 +49,36 @@ class BaseMeepoAgent(BaseChatAgent, ABC):
     The Meepo platform will provide concrete implementations for various
     frameworks, ensuring consistent behavior and seamless integration across
     different AI agent frameworks.
+
+    Args:
+        T: The type of the internal agent being wrapped. Must be a subclass
+           of BaseChatAgent.
     """
+
+    _internal_agent: T
+
+    def __getattr__(self, name: str) -> Any:
+        """Delegate any unknown attributes to the internal agent.
+
+        This method provides automatic delegation of attributes to the internal
+        agent, allowing framework-specific implementations to expose all their
+        native functionality through the Meepo adapter.
+
+        Args:
+            name: The name of the attribute to get
+
+        Returns:
+            The attribute from the internal agent
+
+        Raises:
+            AttributeError: If the attribute doesn't exist or no internal agent
+        """
+        if self._internal_agent is None:
+            raise AttributeError(
+                f"{self.__class__.__name__} has no internal agent"
+            )
+        if hasattr(self._internal_agent, name):
+            return getattr(self._internal_agent, name)
+        raise AttributeError(
+            f"{self.__class__.__name__} has no attribute '{name}'"
+        )
